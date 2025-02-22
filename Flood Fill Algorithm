@@ -1,0 +1,36 @@
+class Solution {
+private: 
+    bool isValid(int i,int j,int n,int m,int c,vector<vector<int>>& image){
+        if(i>=0&&i<n&&j>=0&&j<m&&image[i][j]==c){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    void dfs(int i,int j,int n,int m,int c,vector<vector<int>>& image,int color){
+        image[i][j]=color;
+        if(isValid(i-1,j,n,m,c,image)){
+            dfs(i-1,j,n,m,c,image,color);
+        }
+        if(isValid(i+1,j,n,m,c,image)){
+            dfs(i+1,j,n,m,c,image,color);
+        }
+        if(isValid(i,j-1,n,m,c,image)){
+            dfs(i,j-1,n,m,c,image,color);
+        }
+        if(isValid(i,j+1,n,m,c,image)){
+            dfs(i,j+1,n,m,c,image,color);
+        }
+    }
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        int n=image.size();
+        int m=image[0].size();
+        int c=image[sr][sc];
+          if (c == color) return image;
+                    dfs(sr,sc,n,m,c,image,color);
+           
+        return image;
+    }
+};
