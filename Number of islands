@@ -1,41 +1,49 @@
 class Solution {
 private: 
-    bool isValid(int a,int b,int c,int d,vector<vector<char>>& grid){
-        if(a>=0&&a<c&&b>=0&&b<d&&grid[a][b]=='1'){
-            return true;
+    // Function to check if a given cell (a, b) is within the grid and is land ('1')
+    bool isValid(int a, int b, int c, int d, vector<vector<char>>& grid) {
+        if (a >= 0 && a < c && b >= 0 && b < d && grid[a][b] == '1') {
+            return true; // Valid land cell
         }
-        else{
-            return false;
+        return false; // Out of bounds or water ('0')
+    }
+
+    // Depth-First Search (DFS) to traverse the island and mark visited cells
+    void dfs(int i, int j, int n, int m, vector<vector<char>>& grid) {
+        grid[i][j] = '0'; // Mark the current cell as visited by changing it to '0'
+
+        // Explore all four possible directions (up, down, left, right)
+        if (isValid(i - 1, j, n, m, grid)) { // Up
+            dfs(i - 1, j, n, m, grid);
+        }
+        if (isValid(i + 1, j, n, m, grid)) { // Down
+            dfs(i + 1, j, n, m, grid);
+        }
+        if (isValid(i, j - 1, n, m, grid)) { // Left
+            dfs(i, j - 1, n, m, grid);
+        }
+        if (isValid(i, j + 1, n, m, grid)) { // Right
+            dfs(i, j + 1, n, m, grid);
         }
     }
-    void dfs(int i,int j,int n,int m,vector<vector<char>>& grid){
-        grid[i][j]=0;
-        if (isValid(i-1,j,n,m,grid)){
-            dfs(i-1,j,n,m,grid);
-        }
-        if (isValid(i+1,j,n,m,grid)){
-            dfs(i+1,j,n,m,grid);
-        }
-        if (isValid(i,j-1,n,m,grid)){
-            dfs(i,j-1,n,m,grid);
-        }
-        if (isValid(i,j+1,n,m,grid)){
-            dfs(i,j+1,n,m,grid);
-        }
-    }
+
 public:
+    // Function to count the number of islands
     int numIslands(vector<vector<char>>& grid) {
-        int n=grid.size();
-        int m=grid[0].size();
-        int ans=0;
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(grid[i][j]=='1'){
-                    ans++;
-                    dfs(i,j,n,m,grid);
+        int n = grid.size();    // Number of rows
+        int m = grid[0].size(); // Number of columns
+        int ans = 0; // Counter for islands
+
+        // Traverse each cell in the grid
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                // If the cell is land ('1'), it means we found a new island
+                if (grid[i][j] == '1') {
+                    ans++; // Increase island count
+                    dfs(i, j, n, m, grid); // Perform DFS to mark the entire island
                 }
             }
         }
-        return ans;
+        return ans; // Return the total number of islands
     }
 };
